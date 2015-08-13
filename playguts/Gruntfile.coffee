@@ -6,7 +6,7 @@ module.exports = (grunt) ->
 			dist:
 				files: [
 					expand: true
-					cwd: 'assets/stylesheets/'
+					cwd: 'src/stylesheets/'
 					src: ['**/*.scss']
 					dest: 'dist/css/'
 					ext: '.css'
@@ -26,15 +26,16 @@ module.exports = (grunt) ->
 				]
 			dist:
 				src: ['dist/css/**/*.css']
-		babel:
+		browserify:
 			dist:
 				files: [
-					expand: true
-					cwd: 'assets/scripts/'
-					src: ['**/*.es6']
-					dest: 'dist/js/'
-					ext: '.js'
-				]
+					'dist/js/bundle.js': 'src/scripts/main.es6'
+				],
+				options: {
+					transform: [["babelify", { "stage": 0 }]],
+					browserifyOptions:
+						debug: true
+				}
 		clean:
 			distCss:
 				[ 'dist/css/' ]
@@ -42,13 +43,13 @@ module.exports = (grunt) ->
 				[ 'dist/js/' ]
 		watch:
 			scss:
-				files: 'assets/stylesheets/**/*.scss'
+				files: 'src/stylesheets/**/*.scss'
 				tasks: ['clean:distCss', 'sass:dist', 'postcss:dist']
 				options:
 					spawn: false
 			es6:
-				files: 'assets/scripts/**/*.es6'
-				tasks: ['clean:distJs', 'babel:dist']
+				files: 'src/scripts/**/*.es6'
+				tasks: ['clean:distJs', 'browserify:dist']
 				options:
 					spawn: false
 
@@ -58,13 +59,13 @@ module.exports = (grunt) ->
 	grunt.loadNpmTasks 'grunt-contrib-clean'
 	grunt.loadNpmTasks 'grunt-contrib-sass'
 	grunt.loadNpmTasks 'grunt-postcss'
-	grunt.loadNpmTasks 'grunt-babel'
+	grunt.loadNpmTasks "grunt-browserify"
 
 	grunt.registerTask 'default', [
 		'clean'
 		'sass'
 		'postcss'
-		'babel'
+		'browserify'
 		'watch'
 	]
 	grunt.registerTask 'build', [

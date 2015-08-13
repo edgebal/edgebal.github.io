@@ -1,7 +1,1 @@
-{
-"version": 3,
-"mappings": "",
-"sources": [],
-"names": [],
-"file": "playguts.css"
-}
+{"version":3,"sources":["../../src/stylesheets/playguts.scss"],"names":[],"mappings":"AAAA;EACI,cAAa,EAAA","file":"playguts.css"}
